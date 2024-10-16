@@ -1,7 +1,7 @@
 # Read Me First
 The following was discovered as part of building this project:
 
-* The original package name 'dev.gui.spot-enjoy' is invalid and this project uses 'dev.gui.spot_enjoy' instead.
+* The original package name 'dev.gui.spot-enjoy' is invalid and this project uses 'dev.gui.data_fy' instead.
 
 # Getting Started
 

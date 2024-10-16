@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>dev.gui</groupId>
-	<artifactId>spot-enjoy</artifactId>
+	<artifactId>data-fy</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spot-enjoy</name>
 	<description>Brincando com a API do spotify</description>
