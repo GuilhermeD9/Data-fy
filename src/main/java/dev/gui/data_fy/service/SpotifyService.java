@@ -23,8 +23,8 @@ public class SpotifyService {
     }
 
     //Token de acesso para realizar as funções
-    public String getAcessToken(String clientId, String clientSecret) {
-        var request = new LoginRequest("client_credentials", clientId, clientSecret);
+    public String getAcessToken() {
+        var request = new LoginRequest("client_credentials", "e7b49745a69b45059d31033e2638e8c1", "1de1a2bc971941218785ddc0ca320c2d");
         return authSpotifyClient.login(request).getAccessToken();
     }
 
