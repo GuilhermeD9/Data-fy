@@ -1,4 +1,4 @@
-package dev.gui.data_fy.client;
+package dev.gui.data_fy.model;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -9,6 +9,7 @@ import java.util.List;
 public class AlbumWrapper {
     private List<Album> items;
 
+    //Construtores, getters e setters
     public AlbumWrapper(List<Album> items) {
         this.items = items;
     }

@@ -1,5 +1,7 @@
 package dev.gui.data_fy.client;
 
+import dev.gui.data_fy.model.LoginRequest;
+import dev.gui.data_fy.model.LoginResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;

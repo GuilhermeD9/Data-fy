@@ -1,4 +1,4 @@
-package dev.gui.data_fy.client;
+package dev.gui.data_fy.model;
 
 import feign.form.FormProperty;
 

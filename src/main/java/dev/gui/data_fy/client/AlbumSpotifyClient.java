@@ -1,5 +1,6 @@
 package dev.gui.data_fy.client;
 
+import dev.gui.data_fy.model.AlbumResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;

@@ -1,6 +1,8 @@
 package dev.gui.data_fy.controller;
 
 import dev.gui.data_fy.client.*;
+import dev.gui.data_fy.model.Album;
+import dev.gui.data_fy.model.LoginRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
