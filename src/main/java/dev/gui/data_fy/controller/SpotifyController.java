@@ -3,12 +3,11 @@ package dev.gui.data_fy.controller;
 import dev.gui.data_fy.model.Album;
 import dev.gui.data_fy.model.Artist;
 import dev.gui.data_fy.service.SpotifyService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -25,6 +24,18 @@ public class SpotifyController {
         return spotifyService.getAcessToken();
     }
 
+    @GetMapping("/authorize")
+    public void authorize(HttpServletResponse response) throws IOException {
+        spotifyService.authorizeUser(response);
+    }
+
+    @GetMapping("/callback")
+    public ResponseEntity<String> callback(@RequestParam("code") String code) {
+        //Trocar o código de autorização por um token de acesso
+        String acessToken = spotifyService.handleCallback(code);
+        return ResponseEntity.ok("Autenticado com sucesso! Token: " + acessToken);
+    }
+
     @GetMapping("/albums")
     public ResponseEntity<List<Album>> getNewAlbums() {
         List<Album> albums = spotifyService.getNewReleases(getAcessToken());
@@ -36,4 +47,5 @@ public class SpotifyController {
         List<Artist> artists = spotifyService.getTopUserArtists(getAcessToken());
         return ResponseEntity.ok(artists);
     }
+
 }
