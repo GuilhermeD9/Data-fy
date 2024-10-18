@@ -20,7 +20,6 @@ public class SpotifyController {
     public SpotifyController(SpotifyService spotifyService) {
         this.spotifyService = spotifyService;
     }
-    
 
     @GetMapping("/authorize")
     public void authorize(HttpServletResponse response) throws IOException {
@@ -28,16 +27,22 @@ public class SpotifyController {
     }
 
     @GetMapping("/callback")
-    public ResponseEntity<String> callback(@RequestParam("code") String code,, HttpSession session) {
+    public ResponseEntity<String> callback(@RequestParam("code") String code, HttpSession session) {
         //Trocar o código de autorização por um token de acesso
-        String acessToken = spotifyService.handleCallback(code);
-        spotifyService.storeAccessToken(session, acessToken);
+        String acessToken = spotifyService.handleCallback(code, session);
         return ResponseEntity.ok("Autenticado com sucesso! Token: " + acessToken);
     }
 
     @GetMapping("/albums")
-    public ResponseEntity<List<Album>> getNewAlbums() {
-        List<Album> albums = spotifyService.getNewReleases(getAcessToken());
+    public ResponseEntity<List<Album>> getNewAlbums(HttpSession session) {
+        String accessToken = spotifyService.getAcessToken(session);
+
+        if (accessToken == null) {
+            //Redireciona o usuário caso o token não esteja disponível
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        List<Album> albums = spotifyService.getNewReleases(accessToken);
         return ResponseEntity.ok(albums);
     }
 

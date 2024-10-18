@@ -87,10 +87,4 @@ public class SpotifyService {
         return response.getItems();
     }
 
-    //Token para o usuário externo
-    public String exchangeCodeForAcessToken(String code, String clientId, String clientSecret) {
-        var request = new LoginRequest("authorization_code", code, clientId, clientSecret, redirectUri);
-        return authSpotifyClient.login(request).getAccessToken();
-    }
-
 }
