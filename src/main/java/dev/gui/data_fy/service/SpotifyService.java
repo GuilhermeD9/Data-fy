@@ -7,6 +7,7 @@ import dev.gui.data_fy.model.Album;
 import dev.gui.data_fy.model.Artist;
 import dev.gui.data_fy.model.LoginRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -19,6 +20,7 @@ public class SpotifyService {
     private final AuthSpotifyClient authSpotifyClient;
     private final AlbumSpotifyClient albumSpotifyClient;
     private final ArtistSpotifyClient artistSpotifyClient;
+
     //Credenciais
     private String clientId = "e7b49745a69b45059d31033e2638e8c1";
     private String clientSecret = "1de1a2bc971941218785ddc0ca320c2d";
@@ -30,10 +32,25 @@ public class SpotifyService {
         this.artistSpotifyClient = artistSpotifyClient;
     }
 
-    //Token de acesso para realizar as funções
-    public String getAcessToken() {
+    //Recupera o token de acesso da sessão ou solicita um novo token
+    public String getAcessToken(HttpSession session) {
+        String accessToken = (String) session.getAttribute("accessToken");
+        if (accessToken == null) {
+            accessToken = requestClientCredentialsToken();
+            storeAccessToken(session, accessToken);
+        }
+        return accessToken;
+    }
+
+    //Solicitar um novo token usando client_credentials
+    private String requestClientCredentialsToken() {
         var request = new LoginRequest("client_credentials", clientId, clientSecret);
         return authSpotifyClient.login(request).getAccessToken();
+    }
+
+    //Armazenar o token de acesso
+    public void storeAccessToken(HttpSession session, String accessToken) {
+        session.setAttribute("accessToken", accessToken);
     }
 
     //Método para pedir autorização dos dados do usuário
@@ -48,6 +65,14 @@ public class SpotifyService {
                 + "&scope=" + URLEncoder.encode(scopes, StandardCharsets.UTF_8);
 
         response.sendRedirect(url);
+    }
+
+    //Trocar o código de autorização por um token de acesso
+    public String handleCallback(String code, HttpSession session) {
+        var request = new LoginRequest("authorization_code", code, clientId, clientSecret, redirectUri);
+        String accessToken = authSpotifyClient.login(request).getAccessToken();
+        storeAccessToken(session, accessToken);
+        return accessToken;
     }
 
     //Novos albuns do spotify
@@ -68,8 +93,4 @@ public class SpotifyService {
         return authSpotifyClient.login(request).getAccessToken();
     }
 
-    public String handleCallback(String code) {
-        var request = new LoginRequest("authorization_code", code, clientId, clientSecret, redirectUri);
-        return authSpotifyClient.login(request).getAccessToken();
-    }
 }

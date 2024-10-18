@@ -4,6 +4,8 @@ import dev.gui.data_fy.model.Album;
 import dev.gui.data_fy.model.Artist;
 import dev.gui.data_fy.service.SpotifyService;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,15 +16,11 @@ import java.util.List;
 @RequestMapping("/spotify/api")
 public class SpotifyController {
     private final SpotifyService spotifyService;
-    private String token;
 
     public SpotifyController(SpotifyService spotifyService) {
         this.spotifyService = spotifyService;
     }
-
-    private String getAcessToken() {
-        return spotifyService.getAcessToken();
-    }
+    
 
     @GetMapping("/authorize")
     public void authorize(HttpServletResponse response) throws IOException {
@@ -30,9 +28,10 @@ public class SpotifyController {
     }
 
     @GetMapping("/callback")
-    public ResponseEntity<String> callback(@RequestParam("code") String code) {
+    public ResponseEntity<String> callback(@RequestParam("code") String code,, HttpSession session) {
         //Trocar o código de autorização por um token de acesso
         String acessToken = spotifyService.handleCallback(code);
+        spotifyService.storeAccessToken(session, acessToken);
         return ResponseEntity.ok("Autenticado com sucesso! Token: " + acessToken);
     }
 
@@ -43,8 +42,14 @@ public class SpotifyController {
     }
 
     @GetMapping("/top-user-artists")
-    public ResponseEntity<List<Artist>> getTopUserArtists() {
-        List<Artist> artists = spotifyService.getTopUserArtists(getAcessToken());
+    public ResponseEntity<List<Artist>> getTopUserArtists(HttpSession session) {
+        String accessToken = spotifyService.getAcessToken(session);
+
+        if (accessToken == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        List<Artist> artists = spotifyService.getTopUserArtists(accessToken);
         return ResponseEntity.ok(artists);
     }
 
