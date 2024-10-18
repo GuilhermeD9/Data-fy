@@ -7,29 +7,29 @@ public class LoginRequest {
     @FormProperty("grant_type")
     private String grantType;
     @FormProperty("client_id")
-    private String clientID;
+    private String client_id;
     @FormProperty("client_secret")
-    private String clientSecret;
+    private String client_secret;
     @FormProperty("code")
     private String code;
     @FormProperty("redirect_uri")
-    private String redirectUri;
+    private String redirect_uri;
 
     //Construtores, Getters e Setters
     //Construtor para o fluxo de client_credentials
-    public LoginRequest(String grantType, String clientID, String clientSecret) {
+    public LoginRequest(String grantType, String client_id, String client_secret) {
         this.grantType = grantType;
-        this.clientID = clientID;
-        this.clientSecret = clientSecret;
+        this.client_id = client_id;
+        this.client_secret = client_secret;
     }
 
     //Construtor para o fluxo de authorization_code
-    public LoginRequest(String grantType, String clientID, String clientSecret, String code, String redirectUri) {
+    public LoginRequest(String grantType, String client_id, String client_secret, String code, String redirect_uri) {
         this.grantType = grantType;
-        this.clientID = clientID;
-        this.clientSecret = clientSecret;
+        this.client_id = client_id;
+        this.client_secret = client_secret;
         this.code = code;
-        this.redirectUri = redirectUri;
+        this.redirect_uri = redirect_uri;
     }
 
     public String getGrantType() {
@@ -40,19 +40,35 @@ public class LoginRequest {
         this.grantType = grantType;
     }
 
-    public String getClientID() {
-        return clientID;
+    public String getClient_id() {
+        return client_id;
     }
 
-    public void setClientID(String clientID) {
-        this.clientID = clientID;
+    public void setClient_id(String client_id) {
+        this.client_id = client_id;
     }
 
-    public String getClientSecret() {
-        return clientSecret;
+    public String getClient_secret() {
+        return client_secret;
     }
 
-    public void setClientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
+    public void setClient_secret(String client_secret) {
+        this.client_secret = client_secret;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getRedirect_uri() {
+        return redirect_uri;
+    }
+
+    public void setRedirect_uri(String redirect_uri) {
+        this.redirect_uri = redirect_uri;
     }
 }

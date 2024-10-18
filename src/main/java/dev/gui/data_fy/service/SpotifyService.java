@@ -6,6 +6,8 @@ import dev.gui.data_fy.client.AuthSpotifyClient;
 import dev.gui.data_fy.model.Album;
 import dev.gui.data_fy.model.Artist;
 import dev.gui.data_fy.model.LoginRequest;
+import dev.gui.data_fy.model.LoginResponse;
+import feign.FeignException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -44,8 +47,9 @@ public class SpotifyService {
 
     //Solicitar um novo token usando client_credentials
     private String requestClientCredentialsToken() {
+        String authHeader = getBasicAuthHeader();
         var request = new LoginRequest("client_credentials", clientId, clientSecret);
-        return authSpotifyClient.login(request).getAccessToken();
+        return authSpotifyClient.login(authHeader, request).getAccessToken();
     }
 
     //Armazenar o token de acesso
@@ -69,10 +73,22 @@ public class SpotifyService {
 
     //Trocar o código de autorização por um token de acesso
     public String handleCallback(String code, HttpSession session) {
+        String authHeader = getBasicAuthHeader();
         var request = new LoginRequest("authorization_code", code, clientId, clientSecret, redirectUri);
-        String accessToken = authSpotifyClient.login(request).getAccessToken();
-        storeAccessToken(session, accessToken);
-        return accessToken;
+        try {
+            LoginResponse response = authSpotifyClient.login(authHeader, request);
+            System.out.println("Response from spotify: " + response);
+            return response.getAccessToken();
+        } catch (FeignException e) {
+            System.err.println("Error during authentication: " + e.getMessage());
+            System.err.println("Response body: " + e.contentUTF8());
+            throw e;
+        }
+    }
+
+    private String getBasicAuthHeader() {
+        String auth = clientId + ":" + clientSecret;
+        return "Basic " + Base64.getEncoder().encodeToString(auth.getBytes(StandardCharsets.UTF_8));
     }
 
     //Novos albuns do spotify
