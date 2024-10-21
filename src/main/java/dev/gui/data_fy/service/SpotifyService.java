@@ -48,8 +48,18 @@ public class SpotifyService {
     //Solicitar um novo token usando client_credentials
     private String requestClientCredentialsToken() {
         String authHeader = getBasicAuthHeader();
-        var request = new LoginRequest("client_credentials", clientId, clientSecret);
-        return authSpotifyClient.login(authHeader, request).getAccessToken();
+        try {
+            return authSpotifyClient.login(authHeader,
+                    "client_credentials",
+                    null,
+                    null,
+                    clientId,
+                    clientSecret).getAccessToken();
+        } catch (FeignException e) {
+            System.err.println("Error during client credentials authentication " + e.getMessage());
+            System.err.println("Response body: " + e.contentUTF8());
+            throw e;
+        }
     }
 
     //Armazenar o token de acesso
@@ -60,7 +70,6 @@ public class SpotifyService {
     //Método para pedir autorização dos dados do usuário
     public void authorizeUser(HttpServletResponse response) throws IOException {
         String scopes = "user-top-read"; //Permissões necessárias
-
         //URL de redirecionamento do usuário
         String url = "https://accounts.spotify.com/authorize"
                 + "?client_id=" + clientId
@@ -74,10 +83,14 @@ public class SpotifyService {
     //Trocar o código de autorização por um token de acesso
     public String handleCallback(String code, HttpSession session) {
         String authHeader = getBasicAuthHeader();
-        var request = new LoginRequest("authorization_code", code, clientId, clientSecret, redirectUri);
         try {
-            LoginResponse response = authSpotifyClient.login(authHeader, request);
-            System.out.println("Response from spotify: " + response);
+            LoginResponse response = authSpotifyClient.login(
+                    authHeader, "authorization_code",
+                    code,
+                    redirectUri,
+                    clientId,
+                    clientSecret
+            );
             return response.getAccessToken();
         } catch (FeignException e) {
             System.err.println("Error during authentication: " + e.getMessage());

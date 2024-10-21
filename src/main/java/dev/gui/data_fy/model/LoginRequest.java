@@ -32,6 +32,8 @@ public class LoginRequest {
         this.redirect_uri = redirect_uri;
     }
 
+
+
     public String getGrantType() {
         return grantType;
     }
