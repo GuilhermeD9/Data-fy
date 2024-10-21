@@ -23,6 +23,7 @@ public class LoginService {
     @Autowired
     public LoginService(AuthSpotifyClient authSpotifyClient) {
         this.authSpotifyClient = authSpotifyClient;
+        verificator();
     }
 
     public void verificator() {
@@ -66,7 +67,6 @@ public class LoginService {
 
     //Método para pedir autorização dos dados do usuário
     public void authorizeUser(HttpServletResponse response) throws IOException {
-        verificator();
         String scopes = "user-top-read"; //Permissões necessárias
         //URL de redirecionamento do usuário
         String url = "https://accounts.spotify.com/authorize"
@@ -90,7 +90,9 @@ public class LoginService {
                     clientId,
                     clientSecret
             );
-            return response.getAccessToken();
+            String accessToken = response.getAccessToken();
+            storeAccessToken(session, accessToken);
+            return accessToken;
         } catch (FeignException e) {
             System.err.println("Error during authentication: " + e.getMessage());
             System.err.println("Response body: " + e.contentUTF8());

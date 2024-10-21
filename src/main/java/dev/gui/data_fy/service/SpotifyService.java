@@ -28,6 +28,7 @@ public class SpotifyService {
 
     //Artistas mais escutados do usuário
     public List<Artist> getTopUserArtists(String token) {
+        System.out.println("Acess Token: " + token);
         var response = artistSpotifyClient.getTopUserArtists("Bearer " + token);
         return response.getItems();
     }

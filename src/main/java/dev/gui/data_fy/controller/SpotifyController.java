@@ -1,5 +1,6 @@
 package dev.gui.data_fy.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.gui.data_fy.model.Album;
 import dev.gui.data_fy.model.Artist;
 import dev.gui.data_fy.service.LoginService;
@@ -34,8 +35,13 @@ public class SpotifyController {
     @GetMapping("/callback")
     public ResponseEntity<String> callback(@RequestParam("code") String code, HttpSession session) {
         //Trocar o código de autorização por um token de acesso
-        String acessToken = loginService.handleCallback(code, session);
-        return ResponseEntity.ok("Autenticado com sucesso! Token: " + acessToken);
+        try {
+            String acessToken = loginService.handleCallback(code, session);
+            return ResponseEntity.ok("Autenticado com sucesso! Token: " + acessToken);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
+                    body("Erro durante a autenticação: " + e.getMessage());
+        }
     }
 
     @GetMapping("/albums")
@@ -52,15 +58,23 @@ public class SpotifyController {
     }
 
     @GetMapping("/top-user-artists")
-    public ResponseEntity<List<Artist>> getTopUserArtists(HttpSession session) {
+    public void getTopUserArtists(HttpSession session, HttpServletResponse response) throws IOException {
         String accessToken = loginService.getAcessToken(session);
 
         if (accessToken == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            loginService.authorizeUser(response);
+            return;
         }
 
-        List<Artist> artists = spotifyService.getTopUserArtists(accessToken);
-        return ResponseEntity.ok(artists);
+        try {
+            List<Artist> artists = spotifyService.getTopUserArtists(accessToken);
+            response.setContentType("application/json");
+            response.getWriter().write(new ObjectMapper().writeValueAsString(artists));
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("{\"error\": \"Failed to retrieve top user artists: "
+            + e.getMessage() + "\"}");
+        }
     }
 
 }
