@@ -65,9 +65,10 @@ public class SpotifyController {
             loginService.authorizeUser(response);
             return;
         }
+
         System.out.println("Acess token na sessão: " + accessToken);
         try {
-            List<Artist> artists = spotifyService.getTopUserArtists(accessToken);
+            List<Artist> artists = spotifyService.getTopUserArtists(accessToken, response, session);
             response.setContentType("application/json");
             response.getWriter().write(new ObjectMapper().writeValueAsString(artists));
         } catch (Exception e) {
