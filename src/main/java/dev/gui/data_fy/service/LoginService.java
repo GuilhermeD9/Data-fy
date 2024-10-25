@@ -60,7 +60,7 @@ public class LoginService {
                     null,
                     null,
                     clientId,
-                    clientSecret).getAccessToken();
+                    clientSecret).accessToken();
         } catch (FeignException e) {
             System.err.println("Error during client credentials authentication " + e.getMessage());
             System.err.println("Response body: " + e.contentUTF8());
@@ -93,7 +93,7 @@ public class LoginService {
                     clientId,
                     clientSecret
             );
-            String accessToken = response.getAccessToken();
+            String accessToken = response.accessToken();
             storeAccessToken(session, accessToken);
             return accessToken;
         } catch (FeignException e) {

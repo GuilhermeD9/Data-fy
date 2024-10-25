@@ -33,14 +33,14 @@ public class SpotifyService {
     //Novos albuns do spotify
     public List<Album> getNewReleases(String token) {
         var response = albumSpotifyClient.getReleases("Bearer " + token);
-        return response.getAlbums().getItems();
+        return response.albums().items();
     }
 
     //Artistas mais escutados do usuário
     public List<Artist> getTopUserArtists(String token, HttpServletResponse responser, HttpSession session) throws IOException {
         try {
             var response = artistSpotifyClient.getTopUserArtists("Bearer " + token);
-            return response.getItems();
+            return response.items();
         } catch (FeignException e) {
             if (e.status() == 401) {
                 System.err.println("Token inválido ou expirado");
@@ -55,7 +55,7 @@ public class SpotifyService {
         int offset = 0;
         try {
             var response = trackSpotifyClient.getTopUserTracks("Bearer " + token, limit, offset);
-            return response.getItems();
+            return response.items();
         } catch (FeignException e) {
             if (e.status() == 401) {
                 System.err.println("Token inválido ou expirado. Tentando renovar o token...");
