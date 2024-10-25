@@ -3,6 +3,7 @@ package dev.gui.data_fy.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.gui.data_fy.model.Album;
 import dev.gui.data_fy.model.Artist;
+import dev.gui.data_fy.model.Track;
 import dev.gui.data_fy.service.LoginService;
 import dev.gui.data_fy.service.SpotifyService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -61,11 +62,6 @@ public class SpotifyController {
     public void getTopUserArtists(HttpSession session, HttpServletResponse response) throws IOException {
         String accessToken = loginService.getAcessToken(session);
 
-        if (accessToken == null) {
-            loginService.authorizeUser(response);
-            return;
-        }
-
         System.out.println("Acess token na sessão: " + accessToken);
         try {
             List<Artist> artists = spotifyService.getTopUserArtists(accessToken, response, session);
@@ -78,4 +74,19 @@ public class SpotifyController {
         }
     }
 
+    @GetMapping("/top-user-tracks")
+    public void getTopUserTracks(HttpSession session, HttpServletResponse response) throws IOException {
+        String accessToken = loginService.getAcessToken(session);
+
+        System.out.println("Acess token na sessão: " + accessToken);
+        try {
+            List<Track> tracks = spotifyService.getTopUserTracks(accessToken, response, session);
+            response.setContentType("application/json");
+            response.getWriter().write(new ObjectMapper().writeValueAsString(tracks));
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("{\"error\": \"Failed to retrieve top user artists: "
+                    + e.getMessage() + "\"}");
+        }
+    }
 }
