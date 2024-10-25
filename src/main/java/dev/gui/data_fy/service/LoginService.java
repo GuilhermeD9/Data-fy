@@ -23,6 +23,7 @@ public class LoginService {
     @Autowired
     public LoginService(AuthSpotifyClient authSpotifyClient) {
         this.authSpotifyClient = authSpotifyClient;
+        verificator();
     }
 
     public void verificator() {
@@ -34,11 +35,19 @@ public class LoginService {
     //Recupera o token de acesso da sessão ou solicita um novo token
     public String getAcessToken(HttpSession session) {
         String accessToken = (String) session.getAttribute("accessToken");
+        Long tokenExpirationTime = (Long) session.getAttribute("tokenExpirationTime");
         if (accessToken == null) {
             accessToken = requestClientCredentialsToken();
             storeAccessToken(session, accessToken);
         }
         return accessToken;
+    }
+
+    //Armazenar o token de acesso
+    public void storeAccessToken(HttpSession session, String accessToken) {
+        session.setAttribute("accessToken", accessToken);
+        long expirationTime = System.currentTimeMillis() + (3600 * 1000);
+        session.setAttribute("tokenExpirationTime", expirationTime);
     }
 
     //Solicitar um novo token usando client_credentials
@@ -51,7 +60,7 @@ public class LoginService {
                     null,
                     null,
                     clientId,
-                    clientSecret).getAccessToken();
+                    clientSecret).accessToken();
         } catch (FeignException e) {
             System.err.println("Error during client credentials authentication " + e.getMessage());
             System.err.println("Response body: " + e.contentUTF8());
@@ -59,14 +68,8 @@ public class LoginService {
         }
     }
 
-    //Armazenar o token de acesso
-    public void storeAccessToken(HttpSession session, String accessToken) {
-        session.setAttribute("accessToken", accessToken);
-    }
-
     //Método para pedir autorização dos dados do usuário
     public void authorizeUser(HttpServletResponse response) throws IOException {
-        verificator();
         String scopes = "user-top-read"; //Permissões necessárias
         //URL de redirecionamento do usuário
         String url = "https://accounts.spotify.com/authorize"
@@ -90,7 +93,9 @@ public class LoginService {
                     clientId,
                     clientSecret
             );
-            return response.getAccessToken();
+            String accessToken = response.accessToken();
+            storeAccessToken(session, accessToken);
+            return accessToken;
         } catch (FeignException e) {
             System.err.println("Error during authentication: " + e.getMessage());
             System.err.println("Response body: " + e.contentUTF8());
