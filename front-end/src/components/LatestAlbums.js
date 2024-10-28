@@ -7,14 +7,11 @@ function LatestAlbums() {
     const [albums, setAlbums] = useState([]);
 
     useEffect(() => {
-        axios.get('spotify/api/albums', {
-            headers: {
-                Authorization: 'Bearer TOKEN_DE_ACESSO',
-            }
-        })
-        .then(response => setAlbums(response.data.items))
+        axios.get('/spotify/api/albums')
+        .then(response => setAlbums(response.data))
         .catch(error => console.error('Erro ao buscar os albuns:', error));
     }, []);
+    
 
     return (
         <Container>
