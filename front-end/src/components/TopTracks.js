@@ -7,7 +7,7 @@ function TopTracks() {
     const[tracks, setTracks] = useState([]);
 
     useEffect(() => {
-        axios.get('/top-user-tracks', {
+        axios.get('spotify/api/top-user-tracks', {
             headers: {
                 Authorization: 'Bearer TOKEN_DE_ACESSO',
             }

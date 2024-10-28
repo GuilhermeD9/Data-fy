@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { Grid2, Container, Typography } from "@mui/material";
-import AlbumCard from './AlbumCard';
+import AlbumCard from './AlbumCard.js';
 
 function LatestAlbums() {
     const [albums, setAlbums] = useState([]);
