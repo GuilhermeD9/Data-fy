@@ -7,26 +7,31 @@ function TopArtists() {
     const [artists, setArtists] = useState([]);
 
     useEffect(() => {
-        axios.get('/top-user-artists', {
-            headers: {
-                Authorization: 'Bearer TOKEN_DE_ACESSO'
-            }
+        axios.get('/spotify/api/top-user-artists')
+        .then(response => {
+            const items = response.data || [];
+            setArtists(items);
         })
-        .then(response => setArtists(response.data.items))
         .catch(error => console.error('Erro ao buscar os artistas', error));
     }, []);
 
     return (
         <Container>
             <Typography variant="h4" component="h2" gutterBottom>
-                Top Artists
+                Artistas mais ouvidos do usuário
             </Typography>
             <Grid2 container spacing={3}>
-                {artists.map(artist => (
-                    <Grid2 item xs={12} sm={6} md={4} key={artist.id}>
-                        <ArtistCard artist={artist} />
-                    </Grid2>
-                ))}
+                {artists.length > 0 ? (
+                    artists.map(artist => (
+                        <Grid2 item xs={12} sm={6} md={4} key={artist.id}>
+                            <ArtistCard artist={artist} />
+                        </Grid2>
+                    ))
+                ) : (
+                    <Typography variant="body1" color="textSecondary">
+                        Nenhum artista encontrado.
+                    </Typography>
+                )}
             </Grid2>
         </Container>
     );

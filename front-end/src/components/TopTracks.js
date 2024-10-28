@@ -7,11 +7,7 @@ function TopTracks() {
     const[tracks, setTracks] = useState([]);
 
     useEffect(() => {
-        axios.get('/top-user-tracks', {
-            headers: {
-                Authorization: 'Bearer TOKEN_DE_ACESSO',
-            }
-        })
+        axios.get('/top-user-tracks')
         .then(response => setTracks(response.data.items))
         .catch(error => console.error('Erro ao buscar as músicas:', error));
     }, []);

@@ -6,7 +6,8 @@ function ArtistCard({ artist }) {
         <Card>
             <CardMedia
                 component="img"
-                height="140"
+                height="300"
+                width="300"
                 image={artist.images[0]?.url || 'https://via.placeholder.com/150'}
                 alt={artist.name}
             />
