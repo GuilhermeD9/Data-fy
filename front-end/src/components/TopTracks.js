@@ -7,8 +7,11 @@ function TopTracks() {
     const[tracks, setTracks] = useState([]);
 
     useEffect(() => {
-        axios.get('/top-user-tracks')
-        .then(response => setTracks(response.data.items))
+        axios.get('/spotify/api/top-user-tracks')
+        .then(response => {
+            const items = response.data || {};
+            setTracks(items);
+        })    
         .catch(error => console.error('Erro ao buscar as músicas:', error));
     }, []);
 
@@ -18,11 +21,17 @@ function TopTracks() {
                 Top user tracks
             </Typography>
             <Grid2 container spacing={3}>
-                {tracks.map(track => (
-                    <Grid2 item xs={12} sm={6} md={4} key={track.id}>
-                        <TrackCard track={track} />
-                    </Grid2>    
-                ))}
+                {tracks.length > 0 ? (
+                    tracks.map(track => (
+                        <Grid2 item xs={12} sm={6} md={4} key={track.id}>
+                            <TrackCard track={track} />
+                        </Grid2>    
+                ))
+            ) : (
+                <Typography variant="body1" color="textSecondary">
+                    Nenhuma música encontrada
+                </Typography>
+            )}      
             </Grid2>
         </Container>
     );
