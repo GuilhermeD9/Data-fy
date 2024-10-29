@@ -6,8 +6,6 @@ function TrackCard({ track }) {
         <Card>
             <CardMedia
             component="img"
-            height="300"
-            width="300"
             image={track.album.images[0]?.url || 'https://via.placeholder.com/150'}
             alt={track.name}
             />

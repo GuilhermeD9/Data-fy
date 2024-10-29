@@ -1,17 +1,14 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, Button } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { AppBar, Toolbar, Typography, } from '@mui/material';
+import './css/Header.css'
 
 function Header() {
     return (
-        <AppBar position='static'>
+        <AppBar position='static' className='header'>
             <Toolbar>
-                <Typography variant='h6' style={{ flexGrow: 1 }}>
-                    Data-fy
+                <Typography variant='h4'>
+                    Data-Fy
                 </Typography>
-                <Button color='inherit' component={Link} to="/albums">Álbuns</Button>
-                <Button color='inherit' component={Link} to="/">Top Tracks</Button>
-                <Button color='inherit' component={Link} to="/artists">Top Artists</Button>
             </Toolbar>
         </AppBar>
     );

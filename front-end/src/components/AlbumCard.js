@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, CardContent, Typography, CardMedia } from '@mui/material';
+import './css/Card.css';
 
 function AlbumCard({ album }) {
     if (!album) {
@@ -13,7 +14,7 @@ function AlbumCard({ album }) {
     };
 
     return (
-        <Card>
+        <Card className='card'>
             <CardMedia
                 component="img"
                 height="300"
