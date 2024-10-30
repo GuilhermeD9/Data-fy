@@ -10,7 +10,7 @@ function ArtistCard({ artist }) {
                 image={artist.images[0]?.url || 'https://via.placeholder.com/150'}
                 alt={artist.name}
             />
-            <CardContent>
+            <CardContent className="card two-fields">
                 <Typography variant="h6">{artist.name}</Typography>
                 <Typography variant="body2" color="textSecondary">
                     Popularidade: {artist.popularity}
