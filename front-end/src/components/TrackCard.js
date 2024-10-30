@@ -3,7 +3,7 @@ import { Card, CardContent, Typography, CardMedia } from "@mui/material";
 
 function TrackCard({ track }) {
     return (
-        <Card>
+        <Card className="card">
             <CardMedia
             component="img"
             image={track.album.images[0]?.url || 'https://via.placeholder.com/150'}

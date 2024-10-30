@@ -12,6 +12,7 @@
     overflow: hidden;
     background-color: white;
     margin: 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card img {
@@ -23,4 +24,23 @@
 .card-content {
     padding: 10px;
     text-align: center;
+}
+
+.card-content h3 {
+    font-size: 1.2em; /* Tamanho maior para o título */
+    font-weight: bold;
+    color: #333; /* Cor mais escura para contraste */
+    margin: 8px 0;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 4px;
+}
+
+.card-content p {
+    font-size: 0.9em; /* Tamanho menor para subtítulo */
+    color: #666; /* Cor cinza suave */
+    margin: 4px 0;
+}
+
+.card-content p:last-child {
+    color: #888; /* Cor mais clara para a data */
 }

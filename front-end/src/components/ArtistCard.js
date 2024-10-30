@@ -1,13 +1,12 @@
 import React from "react";
 import { Card, CardContent, Typography, CardMedia } from "@mui/material";
+import './css/Card.css'
 
 function ArtistCard({ artist }) {
     return (
-        <Card>
+        <Card className="card">
             <CardMedia
                 component="img"
-                height="300"
-                width="300"
                 image={artist.images[0]?.url || 'https://via.placeholder.com/150'}
                 alt={artist.name}
             />

@@ -22,8 +22,8 @@ function AlbumCard({ album }) {
                 image={album.images[0].url || 'https://via.placeholder.com/150'}
                 alt={album.name}
             />
-            <CardContent>
-                <Typography variant="h6">{album.name}</Typography>
+            <CardContent className='card-content'>
+                <Typography variant="h3">{album.name}</Typography>
                 <Typography variant="body2" color="textSecondary">
                     Artista: {album.artists.map(artist => artist.name).join(', ')}
                 </Typography>

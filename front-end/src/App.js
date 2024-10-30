@@ -15,9 +15,9 @@ function App() {
         <div className='content-wrapper'>
           <Header />
           <Routes>
-            <Route path='/' element={<TopTracks />} />
-            <Route path='/artists' element={<TopArtists />} />
-            <Route path='/albums' element={<LatestAlbums />} />
+            <Route path='/user-tracks' element={<TopTracks />} />
+            <Route path='/user-artists' element={<TopArtists />} />
+            <Route path='/latest-albums' element={<LatestAlbums />} />
           </Routes>
           <Footer />
         </div>
