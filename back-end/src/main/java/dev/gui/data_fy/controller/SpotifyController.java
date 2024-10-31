@@ -78,13 +78,14 @@ public class SpotifyController {
 
     @GetMapping("/top-user-tracks")
     public void getTopUserTracks(HttpSession session, HttpServletResponse response) throws IOException {
-        String accessToken = loginService.getAcessToken(session);
-
-        System.out.println("Acess token na sessão: " + accessToken);
         try {
-            List<Track> tracks = spotifyService.getTopUserTracks(accessToken, response, session);
+            List<Track> tracks = spotifyService.getTopUserTracks(response, session);
             response.setContentType("application/json");
+            response.setStatus(HttpServletResponse.SC_OK);
             response.getWriter().write(new ObjectMapper().writeValueAsString(tracks));
+        } catch (FeignException e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("{\"error\": \"Unauthorized: " + e.getMessage() + "\"}");
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("{\"error\": \"Failed to retrieve top user artists: "
