@@ -51,7 +51,7 @@ public class SpotifyService {
     }
 
     public List<Track> getTopUserTracks(String token, HttpServletResponse responser, HttpSession session) throws IOException{
-        int limit = 10;
+        int limit = 12;
         int offset = 0;
         try {
             var response = trackSpotifyClient.getTopUserTracks("Bearer " + token, limit, offset);

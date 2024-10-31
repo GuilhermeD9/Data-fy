@@ -1,0 +1,40 @@
+import React, { useEffect, useState} from "react";
+import axios from 'axios';
+import { Grid2, Container, Typography } from "@mui/material";
+import ArtistCard from './ArtistCard';
+
+function TopArtists() {
+    const [artists, setArtists] = useState([]);
+
+    useEffect(() => {
+        axios.get('/spotify/api/top-user-artists')
+        .then(response => {
+            const items = response.data || [];
+            setArtists(items);
+        })
+        .catch(error => console.error('Erro ao buscar os artistas', error));
+    }, []);
+
+    return (
+        <Container>
+            <Typography variant="h4" component="h2" gutterBottom>
+                Artistas mais ouvidos do usuário
+            </Typography>
+            <Grid2 container spacing={3}>
+                {artists.length > 0 ? (
+                    artists.map(artist => (
+                        <Grid2 item xs={12} sm={6} md={4} key={artist.id}>
+                            <ArtistCard artist={artist} />
+                        </Grid2>
+                    ))
+                ) : (
+                    <Typography variant="body1" color="textSecondary">
+                        Nenhum artista encontrado.
+                    </Typography>
+                )}
+            </Grid2>
+        </Container>
+    );
+}
+
+export default TopArtists;
