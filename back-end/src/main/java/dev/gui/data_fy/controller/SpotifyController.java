@@ -6,6 +6,7 @@ import dev.gui.data_fy.model.Artist;
 import dev.gui.data_fy.model.Track;
 import dev.gui.data_fy.service.LoginService;
 import dev.gui.data_fy.service.SpotifyService;
+import feign.FeignException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class SpotifyController {
         //Trocar o código de autorização por um token de acesso
         try {
             String acessToken = loginService.handleCallback(code, session);
-            return ResponseEntity.ok("Autenticado com sucesso! Token: " + acessToken);
+            return ResponseEntity.ok("<h1>Autenticado com sucesso!</h1> Pode fechar essa pagina e retornar a página anterior.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
                     body("Erro durante a autenticação: " + e.getMessage());
@@ -60,13 +61,14 @@ public class SpotifyController {
 
     @GetMapping("/top-user-artists")
     public void getTopUserArtists(HttpSession session, HttpServletResponse response) throws IOException {
-        String accessToken = loginService.getAcessToken(session);
-
-        System.out.println("Acess token na sessão: " + accessToken);
         try {
-            List<Artist> artists = spotifyService.getTopUserArtists(accessToken, response, session);
+            List<Artist> artists = spotifyService.getTopUserArtists(response, session);
             response.setContentType("application/json");
+            response.setStatus(HttpServletResponse.SC_OK);
             response.getWriter().write(new ObjectMapper().writeValueAsString(artists));
+        } catch (FeignException e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("{\"error\": \"Unauthorized: " + e.getMessage() + "\"}");
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("{\"error\": \"Failed to retrieve top user artists: "
@@ -76,13 +78,14 @@ public class SpotifyController {
 
     @GetMapping("/top-user-tracks")
     public void getTopUserTracks(HttpSession session, HttpServletResponse response) throws IOException {
-        String accessToken = loginService.getAcessToken(session);
-
-        System.out.println("Acess token na sessão: " + accessToken);
         try {
-            List<Track> tracks = spotifyService.getTopUserTracks(accessToken, response, session);
+            List<Track> tracks = spotifyService.getTopUserTracks(response, session);
             response.setContentType("application/json");
+            response.setStatus(HttpServletResponse.SC_OK);
             response.getWriter().write(new ObjectMapper().writeValueAsString(tracks));
+        } catch (FeignException e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("{\"error\": \"Unauthorized: " + e.getMessage() + "\"}");
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("{\"error\": \"Failed to retrieve top user artists: "

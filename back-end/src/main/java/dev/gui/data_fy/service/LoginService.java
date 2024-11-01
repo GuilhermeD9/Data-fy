@@ -36,7 +36,8 @@ public class LoginService {
     public String getAcessToken(HttpSession session) {
         String accessToken = (String) session.getAttribute("accessToken");
         Long tokenExpirationTime = (Long) session.getAttribute("tokenExpirationTime");
-        if (accessToken == null) {
+
+        if (accessToken == null || System.currentTimeMillis() >= tokenExpirationTime) {
             accessToken = requestClientCredentialsToken();
             storeAccessToken(session, accessToken);
         }
@@ -67,6 +68,7 @@ public class LoginService {
             throw e;
         }
     }
+
 
     //Método para pedir autorização dos dados do usuário
     public void authorizeUser(HttpServletResponse response) throws IOException {

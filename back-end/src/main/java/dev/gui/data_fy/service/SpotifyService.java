@@ -37,29 +37,31 @@ public class SpotifyService {
     }
 
     //Artistas mais escutados do usuário
-    public List<Artist> getTopUserArtists(String token, HttpServletResponse responser, HttpSession session) throws IOException {
+    public List<Artist> getTopUserArtists(HttpServletResponse responser, HttpSession session) throws IOException {
+        int limit = 15;
+        int offset = 0;
+        String token = loginService.getAcessToken(session);
         try {
-            var response = artistSpotifyClient.getTopUserArtists("Bearer " + token);
+            var response = artistSpotifyClient.getTopUserArtists("Bearer " + token, limit, offset);
             return response.items();
         } catch (FeignException e) {
             if (e.status() == 401) {
                 System.err.println("Token inválido ou expirado");
-                loginService.authorizeUser(responser);
             }
             throw e;
         }
     }
 
-    public List<Track> getTopUserTracks(String token, HttpServletResponse responser, HttpSession session) throws IOException{
-        int limit = 12;
+    public List<Track> getTopUserTracks(HttpServletResponse responser, HttpSession session) throws IOException{
+        int limit = 15;
         int offset = 0;
+        String token = loginService.getAcessToken(session);
         try {
             var response = trackSpotifyClient.getTopUserTracks("Bearer " + token, limit, offset);
             return response.items();
         } catch (FeignException e) {
             if (e.status() == 401) {
-                System.err.println("Token inválido ou expirado. Tentando renovar o token...");
-                loginService.authorizeUser(responser);
+                System.err.println("Token inválido ou expirado.");
             }
             throw e;
         }

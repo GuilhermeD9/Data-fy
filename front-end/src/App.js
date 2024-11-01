@@ -6,6 +6,7 @@ import Sidebar from './components/Sidebar';
 import TopTracks from './components/TopTracks';
 import TopArtists from './components/TopArtists';
 import LatestAlbums from './components/LatestAlbums';
+import Home from './components/Home';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <div className='content-wrapper'>
           <Header />
           <Routes>
+            <Route path='/' element={<Home />} />
             <Route path='/user-tracks' element={<TopTracks />} />
             <Route path='/user-artists' element={<TopArtists />} />
             <Route path='/latest-albums' element={<LatestAlbums />} />
