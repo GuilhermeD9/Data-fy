@@ -9,12 +9,10 @@ import dev.gui.data_fy.model.Artist;
 import dev.gui.data_fy.model.RecentTracks;
 import dev.gui.data_fy.model.Track;
 import feign.FeignException;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -45,7 +43,7 @@ public class SpotifyService {
     }
 
     //Músicas tocadas recentemente
-    public List<RecentTracks> getRecentlyPlayedTracks(HttpServletResponse responser, HttpSession session) {
+    public List<RecentTracks> getRecentlyPlayedTracks(HttpSession session) {
         String token = loginService.getAcessToken(session);
         try {
             var response = recentPlayerSpotifyClient.getRecentlyPlayedTracks("Bearer " + token, 20);
@@ -59,7 +57,7 @@ public class SpotifyService {
     }
 
     //Artistas mais escutados do usuário
-    public List<Artist> getTopUserArtists(HttpServletResponse responser, HttpSession session) {
+    public List<Artist> getTopUserArtists(HttpSession session) {
         int limit = 15;
         int offset = 0;
         String token = loginService.getAcessToken(session);
@@ -75,7 +73,7 @@ public class SpotifyService {
     }
 
     //Músicas mais ouvidas do usuário
-    public List<Track> getTopUserTracks(HttpServletResponse responser, HttpSession session) {
+    public List<Track> getTopUserTracks(HttpSession session) {
         int limit = 15;
         int offset = 0;
         String token = loginService.getAcessToken(session);
@@ -90,7 +88,7 @@ public class SpotifyService {
         }
     }
 
-    public Map<String, Integer> getTopGenres(HttpServletResponse response, HttpSession session) {
+    public Map<String, Integer> getTopGenres(HttpSession session) {
         int limit = 15;
         int offset = 0;
         String token = loginService.getAcessToken(session);

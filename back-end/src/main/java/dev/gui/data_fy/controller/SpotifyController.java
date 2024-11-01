@@ -1,6 +1,5 @@
 package dev.gui.data_fy.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.gui.data_fy.model.Album;
 import dev.gui.data_fy.model.Artist;
 import dev.gui.data_fy.model.RecentTracks;
@@ -62,36 +61,30 @@ public class SpotifyController {
     }
 
     @GetMapping("/recently-played")
-    public void getRecentlyPlayedTracks(HttpSession session, HttpServletResponse response) throws IOException {
+    public ResponseEntity<?> getRecentlyPlayedTracks(HttpSession session){
         try {
-            List<RecentTracks> recentTracks = spotifyService.getRecentlyPlayedTracks(response, session);
-            response.setContentType("application/json");
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().write(new ObjectMapper().writeValueAsString(recentTracks));
+            List<RecentTracks> recentTracks = spotifyService.getRecentlyPlayedTracks(session);
+            return ResponseEntity.ok(recentTracks);
         } catch (FeignException e) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("{\"error\": \"Unauthorized: " + e.getMessage() + "\"}");
+            return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED)
+                    .body(Map.of("error", "Unauthorized: " + e.getMessage()));
         } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("{\"error\": \"Failed to retrieve top user artists: "
-                    + e.getMessage() + "\"}");
+            return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Failed do retrieve top user tracks: " + e.getMessage()));
         }
     }
 
     @GetMapping("/top-user-artists")
-    public void getTopUserArtists(HttpSession session, HttpServletResponse response) throws IOException {
+    public ResponseEntity<?> getTopUserArtists(HttpSession session) {
         try {
-            List<Artist> artists = spotifyService.getTopUserArtists(response, session);
-            response.setContentType("application/json");
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().write(new ObjectMapper().writeValueAsString(artists));
+            List<Artist> artists = spotifyService.getTopUserArtists(session);
+            return ResponseEntity.ok(artists);
         } catch (FeignException e) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("{\"error\": \"Unauthorized: " + e.getMessage() + "\"}");
+            return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED)
+                    .body(Map.of("error", "Unauthorized: " + e.getMessage()));
         } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("{\"error\": \"Failed to retrieve top user artists: "
-            + e.getMessage() + "\"}");
+            return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Failed do retrieve top user tracks: " + e.getMessage()));
         }
     }
 
@@ -110,8 +103,8 @@ public class SpotifyController {
     }
 
     @GetMapping("/top-user-genres")
-    public ResponseEntity<Map<String, Integer>> getTopGenres(HttpServletResponse response, HttpSession session) {
-        Map<String, Integer> topGenres = spotifyService.getTopGenres(response, session);
+    public ResponseEntity<Map<String, Integer>> getTopGenres(HttpSession session) {
+        Map<String, Integer> topGenres = spotifyService.getTopGenres(session);
         return ResponseEntity.ok(topGenres);
     }
 }
