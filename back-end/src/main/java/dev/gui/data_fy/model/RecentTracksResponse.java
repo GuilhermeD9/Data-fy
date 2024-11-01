@@ -6,4 +6,5 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import java.util.List;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public record Artist(String id, String name, int popularity, List<String> genres, List<Image> images) {}
+public record RecentTracksResponse(List<RecentTracks> items) {
+}
