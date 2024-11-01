@@ -15,7 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class SpotifyService {
@@ -70,6 +74,7 @@ public class SpotifyService {
         }
     }
 
+    //Músicas mais ouvidas do usuário
     public List<Track> getTopUserTracks(HttpServletResponse responser, HttpSession session) {
         int limit = 15;
         int offset = 0;
@@ -85,4 +90,36 @@ public class SpotifyService {
         }
     }
 
+    public Map<String, Integer> getTopGenres(HttpServletResponse response, HttpSession session) {
+        int limit = 15;
+        int offset = 0;
+        String token = loginService.getAcessToken(session);
+
+        Map<String, Integer> genreCount = new HashMap<>();
+
+        try {
+            List<Artist> topArtists = artistSpotifyClient.getTopUserArtists("Bearer " + token, limit, offset).items();
+
+            for (Artist artist : topArtists) {
+                for (String genre : artist.genres()) {
+                    genreCount.put(genre, genreCount.getOrDefault(genre, 0) + 1);
+                }
+            }
+
+            return genreCount.entrySet().stream()
+                    .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
+                    .limit(15)
+                    .collect(Collectors.toMap(
+                            Map.Entry::getKey,
+                            Map.Entry::getValue,
+                            (e1, e2) -> e1,
+                            LinkedHashMap::new
+                    ));
+        } catch (FeignException e) {
+            if (e.status() == 401) {
+                System.err.println("Token inválido ou expirado");
+            }
+            throw e;
+        }
+    }
 }

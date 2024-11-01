@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/spotify/api")
@@ -74,7 +75,7 @@ public class SpotifyController {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("{\"error\": \"Failed to retrieve top user artists: "
                     + e.getMessage() + "\"}");
-    }
+        }
     }
 
     @GetMapping("/top-user-artists")
@@ -95,19 +96,22 @@ public class SpotifyController {
     }
 
     @GetMapping("/top-user-tracks")
-    public void getTopUserTracks(HttpSession session, HttpServletResponse response) throws IOException {
+    public ResponseEntity<?> getTopUserTracks(HttpSession session) {
         try {
-            List<Track> tracks = spotifyService.getTopUserTracks(response, session);
-            response.setContentType("application/json");
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().write(new ObjectMapper().writeValueAsString(tracks));
+            List<Track> tracks = spotifyService.getTopUserTracks(session);
+            return ResponseEntity.ok(tracks);
         } catch (FeignException e) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("{\"error\": \"Unauthorized: " + e.getMessage() + "\"}");
+            return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED)
+                    .body(Map.of("error", "Unauthorized: " + e.getMessage()));
         } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("{\"error\": \"Failed to retrieve top user artists: "
-                    + e.getMessage() + "\"}");
+            return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Failed do retrieve top user tracks: " + e.getMessage()));
         }
+    }
+
+    @GetMapping("/top-user-genres")
+    public ResponseEntity<Map<String, Integer>> getTopGenres(HttpServletResponse response, HttpSession session) {
+        Map<String, Integer> topGenres = spotifyService.getTopGenres(response, session);
+        return ResponseEntity.ok(topGenres);
     }
 }
