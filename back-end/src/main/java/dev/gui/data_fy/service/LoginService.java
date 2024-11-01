@@ -72,7 +72,7 @@ public class LoginService {
 
     //Método para pedir autorização dos dados do usuário
     public void authorizeUser(HttpServletResponse response) throws IOException {
-        String scopes = "user-top-read"; //Permissões necessárias
+        String scopes = "user-top-read user-read-recently-played"; //Permissões necessárias
         //URL de redirecionamento do usuário
         String url = "https://accounts.spotify.com/authorize"
                 + "?client_id=" + clientId

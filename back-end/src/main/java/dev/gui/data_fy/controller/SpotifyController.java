@@ -3,6 +3,7 @@ package dev.gui.data_fy.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.gui.data_fy.model.Album;
 import dev.gui.data_fy.model.Artist;
+import dev.gui.data_fy.model.RecentTracks;
 import dev.gui.data_fy.model.Track;
 import dev.gui.data_fy.service.LoginService;
 import dev.gui.data_fy.service.SpotifyService;
@@ -57,6 +58,23 @@ public class SpotifyController {
 
         List<Album> albums = spotifyService.getNewReleases(accessToken);
         return ResponseEntity.ok(albums);
+    }
+
+    @GetMapping("/recently-played")
+    public void getRecentlyPlayedTracks(HttpSession session, HttpServletResponse response) throws IOException {
+        try {
+            List<RecentTracks> recentTracks = spotifyService.getRecentlyPlayedTracks(response, session);
+            response.setContentType("application/json");
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().write(new ObjectMapper().writeValueAsString(recentTracks));
+        } catch (FeignException e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("{\"error\": \"Unauthorized: " + e.getMessage() + "\"}");
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("{\"error\": \"Failed to retrieve top user artists: "
+                    + e.getMessage() + "\"}");
+    }
     }
 
     @GetMapping("/top-user-artists")
