@@ -46,7 +46,7 @@ public class SpotifyService {
     public List<RecentTracks> getRecentlyPlayedTracks(HttpSession session) {
         String token = loginService.getAcessToken(session);
         try {
-            var response = recentPlayerSpotifyClient.getRecentlyPlayedTracks("Bearer " + token, 20);
+            var response = recentPlayerSpotifyClient.getRecentlyPlayedTracks("Bearer " + token, 21);
             return response.items();
         } catch (FeignException e) {
             if (e.status() == 401) {
@@ -58,11 +58,9 @@ public class SpotifyService {
 
     //Artistas mais escutados do usuário
     public List<Artist> getTopUserArtists(HttpSession session) {
-        int limit = 15;
-        int offset = 0;
         String token = loginService.getAcessToken(session);
         try {
-            var response = artistSpotifyClient.getTopUserArtists("Bearer " + token, limit, offset);
+            var response = artistSpotifyClient.getTopUserArtists("Bearer " + token, 21, 0);
             return response.items();
         } catch (FeignException e) {
             if (e.status() == 401) {
@@ -74,11 +72,9 @@ public class SpotifyService {
 
     //Músicas mais ouvidas do usuário
     public List<Track> getTopUserTracks(HttpSession session) {
-        int limit = 15;
-        int offset = 0;
         String token = loginService.getAcessToken(session);
         try {
-            var response = trackSpotifyClient.getTopUserTracks("Bearer " + token, limit, offset);
+            var response = trackSpotifyClient.getTopUserTracks("Bearer " + token, 21,0);
             return response.items();
         } catch (FeignException e) {
             if (e.status() == 401) {
@@ -89,14 +85,12 @@ public class SpotifyService {
     }
 
     public Map<String, Integer> getTopGenres(HttpSession session) {
-        int limit = 15;
-        int offset = 0;
         String token = loginService.getAcessToken(session);
 
         Map<String, Integer> genreCount = new HashMap<>();
 
         try {
-            List<Artist> topArtists = artistSpotifyClient.getTopUserArtists("Bearer " + token, limit, offset).items();
+            List<Artist> topArtists = artistSpotifyClient.getTopUserArtists("Bearer " + token, 20, 0).items();
 
             for (Artist artist : topArtists) {
                 for (String genre : artist.genres()) {

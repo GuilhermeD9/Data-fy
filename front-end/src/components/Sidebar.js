@@ -16,6 +16,8 @@ const Sidebar = () => {
                 <ul>
                     <li><a href="/user-tracks">*Músicas mais escutadas do usuário</a></li>
                     <li><a href="/user-artists">*Artistas mais escutados do usuário</a></li>
+                    <li><a href="/recent-tracks">*Músicas ouvidas recentemente</a></li>
+                    <li><a href="/user-genres">*Gêneros mais escutados</a></li>
                 </ul>
             </ul>
 

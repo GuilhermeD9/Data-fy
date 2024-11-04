@@ -60,7 +60,7 @@ public class SpotifyController {
         return ResponseEntity.ok(albums);
     }
 
-    @GetMapping("/recently-played")
+    @GetMapping("/recent-tracks")
     public ResponseEntity<?> getRecentlyPlayedTracks(HttpSession session){
         try {
             List<RecentTracks> recentTracks = spotifyService.getRecentlyPlayedTracks(session);

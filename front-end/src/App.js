@@ -7,6 +7,8 @@ import TopTracks from './components/TopTracks';
 import TopArtists from './components/TopArtists';
 import LatestAlbums from './components/LatestAlbums';
 import Home from './components/Home';
+import RecentTracks from './components/RecentTracks';
+import TopGenres from './components/TopGenres';
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
             <Route path='/user-tracks' element={<TopTracks />} />
             <Route path='/user-artists' element={<TopArtists />} />
             <Route path='/latest-albums' element={<LatestAlbums />} />
+            <Route path='/recent-tracks' element={<RecentTracks />} />
+            <Route path='/user-genres' element={<TopGenres />} />
           </Routes>
           <Footer />
         </div>
