@@ -41,8 +41,10 @@ public class SpotifyService {
     //Top50 Global
     public List<Track> getTopWorldTracks(String token) {
         String playlistId = "37i9dQZEVXbMDoHDwVN2tF";
-        TrackResponse response = topPlaylistSpotifyClient.getTopTracksPlaylist("Bearer " + token, playlistId);
-        return response.items();
+        TopPlaylistTrackResponse response = topPlaylistSpotifyClient.getTopTracksPlaylist("Bearer " + token, playlistId);
+        return response.getItems().stream()
+                .map(TopPlaylistTrackResponse.Item::getTrack)
+                .collect(Collectors.toList());
     }
 
     //Músicas tocadas recentemente
