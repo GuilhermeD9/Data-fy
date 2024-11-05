@@ -11,6 +11,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface TrackSpotifyClient {
     @GetMapping(value = "/v1/me/top/tracks")
     TrackResponse getTopUserTracks(@RequestHeader("Authorization") String authorization,
-                                   @RequestParam("limit") int limit,
-                                   @RequestParam("offset") int offset);
+                                   @RequestParam("limit") int limit);
 }

@@ -29,7 +29,7 @@ function TopArtists() {
     return (
         <Container>
             <Typography variant="h4" component="h2" gutterBottom>
-                Artistas mais ouvidos do usuário
+                Artistas que você mais escuta
             </Typography>
             <Grid2 container spacing={3}>
                 {artists.length > 0 ? (

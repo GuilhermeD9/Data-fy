@@ -7,7 +7,7 @@ function Header() {
         <AppBar position='static' className='header'>
             <Toolbar>
                 <Typography variant='h4'>
-                    Data-Fy
+                    Data-Fy ♻
                 </Typography>
             </Toolbar>
         </AppBar>
