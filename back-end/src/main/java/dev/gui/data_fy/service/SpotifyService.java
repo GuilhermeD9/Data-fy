@@ -41,7 +41,7 @@ public class SpotifyService {
     //Top50 Global
     public List<Track> getTopWorldTracks(String token) {
         String playlistId = "37i9dQZEVXbMDoHDwVN2tF";
-        TopPlaylistTrackResponse response = topPlaylistSpotifyClient.getTopTracksPlaylist("Bearer " + token, playlistId);
+        TopPlaylistTrackResponse response = topPlaylistSpotifyClient.getTopTracksPlaylist("Bearer " + token, playlistId, 48);
         return response.getItems().stream()
                 .map(TopPlaylistTrackResponse.Item::getTrack)
                 .collect(Collectors.toList());
@@ -65,7 +65,7 @@ public class SpotifyService {
     public List<Artist> getTopUserArtists(HttpSession session) {
         String token = loginService.getAcessToken(session);
         try {
-            var response = artistSpotifyClient.getTopUserArtists("Bearer " + token, 21, 0);
+            var response = artistSpotifyClient.getTopUserArtists("Bearer " + token, 21);
             return response.items();
         } catch (FeignException e) {
             if (e.status() == 401) {
@@ -79,7 +79,7 @@ public class SpotifyService {
     public List<Track> getTopUserTracks(HttpSession session) {
         String token = loginService.getAcessToken(session);
         try {
-            var response = trackSpotifyClient.getTopUserTracks("Bearer " + token, 21,0);
+            var response = trackSpotifyClient.getTopUserTracks("Bearer " + token, 21);
             return response.items();
         } catch (FeignException e) {
             if (e.status() == 401) {
@@ -96,7 +96,7 @@ public class SpotifyService {
         Map<String, Integer> genreCount = new HashMap<>();
 
         try {
-            List<Artist> topArtists = artistSpotifyClient.getTopUserArtists("Bearer " + token, 20, 0).items();
+            List<Artist> topArtists = artistSpotifyClient.getTopUserArtists("Bearer " + token, 20).items();
 
             for (Artist artist : topArtists) {
                 for (String genre : artist.genres()) {

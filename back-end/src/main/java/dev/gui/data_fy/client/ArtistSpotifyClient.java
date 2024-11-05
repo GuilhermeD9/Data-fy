@@ -11,6 +11,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface ArtistSpotifyClient {
     @GetMapping(value = "/v1/me/top/artists")
     ArtistResponse getTopUserArtists(@RequestHeader("Authorization") String authorization,
-                                     @RequestParam("limit") int limit,
-                                     @RequestParam("offset") int offset);
+                                     @RequestParam("limit") int limit);
 }
