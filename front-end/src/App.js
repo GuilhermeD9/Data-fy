@@ -10,6 +10,7 @@ import Home from './components/Home';
 import RecentTracks from './components/RecentTracks';
 import TopGenres from './components/TopGenres';
 import Top50World from './components/Top50World';
+import Top50Brazil from './components/Top50Brazil';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path='/recent-tracks' element={<RecentTracks />} />
             <Route path='/user-genres' element={<TopGenres />} />
             <Route path='/top-world-tracks' element={<Top50World />} />
+            <Route path='/top-brazil-tracks' element={<Top50Brazil />} />
           </Routes>
           <Footer />
         </div>

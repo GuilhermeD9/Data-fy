@@ -34,13 +34,20 @@ public class SpotifyService {
 
     //Novos albuns do spotify
     public List<Album> getNewReleases(String token) {
-        var response = albumSpotifyClient.getReleases("Bearer " + token);
+        var response = albumSpotifyClient.getReleases("Bearer " + token, 30);
         return response.albums().items();
     }
 
     //Top50 Global
-    public List<Track> getTopWorldTracks(String token) {
-        String playlistId = "37i9dQZEVXbMDoHDwVN2tF";
+    public List<Track> getTopRegionTracks(String token, String region) {
+        String playlistId;
+
+        if ("brazil".equalsIgnoreCase(region)) {
+            playlistId = "37i9dQZEVXbMXbN3EUUhlg"; // ID para Top 50 Brasil
+        } else {
+            playlistId = "37i9dQZEVXbMDoHDwVN2tF"; // ID para Top 50 Global
+        }
+
         TopPlaylistTrackResponse response = topPlaylistSpotifyClient.getTopTracksPlaylist("Bearer " + token, playlistId, 48);
         return response.getItems().stream()
                 .map(TopPlaylistTrackResponse.Item::getTrack)
@@ -51,7 +58,7 @@ public class SpotifyService {
     public List<RecentTracks> getRecentlyPlayedTracks(HttpSession session) {
         String token = loginService.getAcessToken(session);
         try {
-            var response = recentPlayerSpotifyClient.getRecentlyPlayedTracks("Bearer " + token, 21);
+            var response = recentPlayerSpotifyClient.getRecentlyPlayedTracks("Bearer " + token, 30);
             return response.items();
         } catch (FeignException e) {
             if (e.status() == 401) {
@@ -65,7 +72,7 @@ public class SpotifyService {
     public List<Artist> getTopUserArtists(HttpSession session) {
         String token = loginService.getAcessToken(session);
         try {
-            var response = artistSpotifyClient.getTopUserArtists("Bearer " + token, 21);
+            var response = artistSpotifyClient.getTopUserArtists("Bearer " + token, 30);
             return response.items();
         } catch (FeignException e) {
             if (e.status() == 401) {
@@ -79,7 +86,7 @@ public class SpotifyService {
     public List<Track> getTopUserTracks(HttpSession session) {
         String token = loginService.getAcessToken(session);
         try {
-            var response = trackSpotifyClient.getTopUserTracks("Bearer " + token, 21);
+            var response = trackSpotifyClient.getTopUserTracks("Bearer " + token, 30);
             return response.items();
         } catch (FeignException e) {
             if (e.status() == 401) {
@@ -96,7 +103,7 @@ public class SpotifyService {
         Map<String, Integer> genreCount = new HashMap<>();
 
         try {
-            List<Artist> topArtists = artistSpotifyClient.getTopUserArtists("Bearer " + token, 20).items();
+            List<Artist> topArtists = artistSpotifyClient.getTopUserArtists("Bearer " + token, 24).items();
 
             for (Artist artist : topArtists) {
                 for (String genre : artist.genres()) {

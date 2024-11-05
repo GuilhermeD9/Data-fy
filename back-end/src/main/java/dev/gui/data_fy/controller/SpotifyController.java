@@ -54,10 +54,10 @@ public class SpotifyController {
         return ResponseEntity.ok(albums);
     }
 
-    @GetMapping("top-world-tracks")
-    public ResponseEntity<List<Track>> getTopWorldTracks(HttpSession session) {
+    @GetMapping("top-region-tracks")
+    public ResponseEntity<List<Track>> getTopWorldTracks(@RequestParam String region, HttpSession session) {
         String accessToken = loginService.getAcessToken(session);
-        List<Track> tracks = spotifyService.getTopWorldTracks(accessToken);
+        List<Track> tracks = spotifyService.getTopRegionTracks(accessToken, region);
         return ResponseEntity.ok(tracks);
     }
 

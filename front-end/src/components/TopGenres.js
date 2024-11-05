@@ -44,7 +44,7 @@ function TopGenres() {
                                     <Typography variant="h6" component="div" style={{ fontWeight: 'bold' }}>
                                         {genre.name}
                                     </Typography>
-                                    <Typography variant="body2" color="textSecondary">
+                                    <Typography variant="body2" color="#00ff1699">
                                         {`${genre.count} vezes`}
                                     </Typography>
                                 </CardContent>
@@ -53,7 +53,7 @@ function TopGenres() {
                     ))
                 ) : (
                     <Grid2 item xs={12}>
-                        <Typography variant="body1" color="textPrimary">
+                        <Typography variant="body1" color="#fffff">
                             Não está aparecendo nada? Experimente clicar em "Fazer login" para ter acesso às suas músicas.
                         </Typography>
                         <Button variant="contained" color="primary" onClick={handleLogin} style={{ marginTop: "10px" }}>

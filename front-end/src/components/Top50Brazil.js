@@ -3,11 +3,11 @@ import axios from "axios";
 import { Grid2, Container, Typography } from "@mui/material";
 import TrackCard from './TrackCard';
 
-function Top50World() {
+function Top50Brazil() {
     const[tracks, setTracks] = useState([]);
 
     useEffect(() => {
-        axios.get('/spotify/api/top-region-tracks?region=world')
+        axios.get('/spotify/api/top-region-tracks?region=brazil')
         .then(response => setTracks(response.data))
         .catch(error => console.error('Erro ao buscar as músicas:', error));
     }, []);
@@ -15,7 +15,7 @@ function Top50World() {
     return (
         <Container>
             <Typography variant="h4" component="h2" gutterBottom>
-                As mais ouvidas no mundo
+                As mais ouvidas no Brasil
             </Typography>
             <Grid2 container spacing={3}>
                 {tracks.length > 0 ? (
@@ -32,4 +32,4 @@ function Top50World() {
     );
 }
 
-export default Top50World;
+export default Top50Brazil;

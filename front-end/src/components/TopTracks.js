@@ -29,7 +29,7 @@ function TopTracks() {
     return (
         <Container>
             <Typography variant="h4" component="h2" gutterBottom>
-                Top user tracks
+                Músicas que você mais escuta
             </Typography>
             <Grid2 container spacing={3}>
                 {tracks.length > 0 ? (
