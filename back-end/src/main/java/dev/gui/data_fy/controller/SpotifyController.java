@@ -50,17 +50,18 @@ public class SpotifyController {
     @GetMapping("/albums")
     public ResponseEntity<List<Album>> getNewAlbums(HttpSession session) {
         String accessToken = loginService.getAcessToken(session);
-
-        if (accessToken == null) {
-            //Redireciona o usuário caso o token não esteja disponível
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-
         List<Album> albums = spotifyService.getNewReleases(accessToken);
         return ResponseEntity.ok(albums);
     }
 
-    @GetMapping("/recently-played")
+    @GetMapping("top-region-tracks")
+    public ResponseEntity<List<Track>> getTopWorldTracks(@RequestParam String region, HttpSession session) {
+        String accessToken = loginService.getAcessToken(session);
+        List<Track> tracks = spotifyService.getTopRegionTracks(accessToken, region);
+        return ResponseEntity.ok(tracks);
+    }
+
+    @GetMapping("/recent-tracks")
     public ResponseEntity<?> getRecentlyPlayedTracks(HttpSession session){
         try {
             List<RecentTracks> recentTracks = spotifyService.getRecentlyPlayedTracks(session);

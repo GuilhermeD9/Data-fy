@@ -16,7 +16,7 @@ function LatestAlbums() {
     return (
         <Container>
             <Typography variant="h4" component="h2" gutterBottom>
-                Últimos Álbuns Lançados
+                Últimos Álbuns Lançados no Spotify
             </Typography>
             <Grid2 container spacing={3}>
                 {albums.map(album => (
