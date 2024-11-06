@@ -11,6 +11,14 @@ Essas instruções permitirão que você obtenha uma cópia do projeto em opera�
 
 De que coisas você precisa para instalar o software e como instalá-lo?
 
+## IMPORTANTE
+Antes de começar, é necessário que você crie ou entre em contato comigo
+pare receber o Client ID e o Client Secret do spotify for developers
+Sem essas credenciais não será possível a utilização da aplicação
+
+Caso opte por criar sua própria aplicação no site do spotify for developers,
+também crie uma RedirectURI chamada: "http://localhost:8080/spotify/api/callback"
+
 ```
 Uma máquina com Java(21 ou superior)
 Node.Js para rodar o projeto React.
