@@ -7,7 +7,7 @@ function LatestAlbums() {
     const [albums, setAlbums] = useState([]);
 
     useEffect(() => {
-        axios.get('/spotify/api/albums')
+        axios.get('/api/spotify/api/albums')
         .then(response => setAlbums(response.data))
         .catch(error => console.error('Erro ao buscar os albuns:', error));
     }, []);

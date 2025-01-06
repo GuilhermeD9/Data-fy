@@ -11,7 +11,7 @@ function TopTracks() {
     })
 
     const fetchTopTracks = () => {
-        axios.get('/spotify/api/top-user-tracks')
+        axios.get('/api/spotify/api/top-user-tracks')
         .then(response => {
             const items = response.data || {};
             setTracks(items);
