@@ -11,7 +11,7 @@ function RecentTracks() {
     }, []);
 
     const fetchTopArtists = () => {
-        axios.get('/spotify/api/recent-tracks')
+        axios.get('/api/spotify/api/recent-tracks')
             .then(response => {
                 const items = response.data || [];
                 setTracks(items);

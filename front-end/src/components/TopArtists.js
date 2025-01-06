@@ -11,7 +11,7 @@ function TopArtists() {
     })
 
     const fetchTopArtists = () => {
-        axios.get('/spotify/api/top-user-artists')
+        axios.get('/api/spotify/api/top-user-artists')
         .then(response => {
             const items = response.data || [];
             setArtists(items);

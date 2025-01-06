@@ -7,7 +7,7 @@ function Top50Brazil() {
     const[tracks, setTracks] = useState([]);
 
     useEffect(() => {
-        axios.get('/spotify/api/top-region-tracks?region=brazil')
+        axios.get('/api/spotify/api/top-region-tracks?region=brazil')
         .then(response => setTracks(response.data))
         .catch(error => console.error('Erro ao buscar as músicas:', error));
     }, []);

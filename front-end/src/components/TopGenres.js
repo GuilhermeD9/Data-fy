@@ -10,7 +10,7 @@ function TopGenres() {
     }, []);
 
     const fetchTopGenres = () => {
-        axios.get('/spotify/api/top-user-genres')
+        axios.get('/api/spotify/api/top-user-genres')
             .then(response => {
                 const items = response.data || [];
 
