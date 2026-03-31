@@ -43,9 +43,9 @@ public class SpotifyService {
         String playlistId;
 
         if ("brazil".equalsIgnoreCase(region)) {
-            playlistId = "37i9dQZEVXbMXbN3EUUhlg"; // ID para Top 50 Brasil
+            playlistId = "71xG6fIgIX0TeqO9Dat7YJ"; // ID para Top 50 Brasil
         } else {
-            playlistId = "37i9dQZEVXbMDoHDwVN2tF"; // ID para Top 50 Global
+            playlistId = "1CMpiNXl6BlvVl3qIi6kTN"; // ID para Top 50 Global
         }
 
         TopPlaylistTrackResponse response = topPlaylistSpotifyClient.getTopTracksPlaylist("Bearer " + token, playlistId, 48);
